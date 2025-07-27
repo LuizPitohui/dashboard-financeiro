@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+dist/
+wheels/
+*.egg-info/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Django stuff:
+*.log
+*.pot
+*.mo
+
+db.sqlite3
+media/
+
+# Mac OS
+.DS_Store
+
+# Thumbnails
+.thumbnails/
+
+# Windows
+thumbs.db
+Desktop.ini
+
+# My stuff
+controle_financeiro_completo.tar.gz
+controle_financeiro_projeto.tar.gz
+todo.md
+README_PROJETO.md

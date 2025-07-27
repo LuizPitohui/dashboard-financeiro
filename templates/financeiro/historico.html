@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Histórico - UNI Controle Financeiro{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Histórico de Movimentações</h1>
+</div>
+
+<!-- Filtros -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-funnel"></i> Filtros
+        </h5>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Nome da Pessoa</label>
+                <input type="text" class="form-control" name="nome" value="{{ nome_filtro }}" placeholder="Buscar por nome...">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Tipo</label>
+                <select class="form-select" name="tipo">
+                    <option value="">Todos</option>
+                    <option value="entrada" {% if tipo_filtro == 'entrada' %}selected{% endif %}>Entrada</option>
+                    <option value="saida" {% if tipo_filtro == 'saida' %}selected{% endif %}>Saída</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Período</label>
+                <select class="form-select" name="periodo">
+                    <option value="">Todos</option>
+                    <option value="hoje" {% if periodo_filtro == 'hoje' %}selected{% endif %}>Hoje</option>
+                    <option value="semana" {% if periodo_filtro == 'semana' %}selected{% endif %}>Esta semana</option>
+                    <option value="mes" {% if periodo_filtro == 'mes' %}selected{% endif %}>Este mês</option>
+                    <option value="ano" {% if periodo_filtro == 'ano' %}selected{% endif %}>Este ano</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-search"></i> Filtrar
+                </button>
+                <a href="{% url 'historico' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle"></i> Limpar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tabela de movimentações -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-table"></i> Movimentações
+        </h5>
+    </div>
+    <div class="card-body">
+        {% if movimentacoes %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Valor</th>
+                            <th>Pessoa</th>
+                            <th>Forma de Pagamento</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mov in movimentacoes %}
+                            <tr>
+                                <td>{{ mov.data_movimentacao|date:"d/m/Y" }}</td>
+                                <td>
+                                    <span class="badge {% if mov.tipo == 'entrada' %}bg-success{% else %}bg-danger{% endif %}">
+                                        {% if mov.tipo == 'entrada' %}
+                                            <i class="bi bi-arrow-up-circle"></i> Entrada
+                                        {% else %}
+                                            <i class="bi bi-arrow-down-circle"></i> Saída
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                <td class="fw-bold {% if mov.tipo == 'entrada' %}text-success{% else %}text-danger{% endif %}">
+                                    {% if mov.tipo == 'entrada' %}+{% else %}-{% endif %}R$ {{ mov.valor|floatformat:2 }}
+                                </td>
+                                <td>{{ mov.nome_pessoa }}</td>
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        {{ mov.get_forma_pagamento_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="text-truncate d-inline-block" style="max-width: 200px;" title="{{ mov.descricao }}">
+                                        {{ mov.descricao }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Resumo -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        <strong>Resumo dos filtros aplicados:</strong>
+                        {% with movimentacoes|length as total %}
+                            {{ total }} movimentação{{ total|pluralize:"ões" }} encontrada{{ total|pluralize }}
+                        {% endwith %}
+                        
+                        {% if movimentacoes %}
+                            - Total de entradas: R$ {{ total_entradas_historico|floatformat:2 }}
+                            - Total de saídas: R$ {{ total_saidas_historico|floatformat:2 }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox display-1 text-muted"></i>
+                <h4 class="text-muted mt-3">Nenhuma movimentação encontrada</h4>
+                <p class="text-muted">Tente ajustar os filtros ou cadastre uma nova movimentação.</p>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCadastro">
+                    <i class="bi bi-plus-circle"></i> Cadastrar Movimentação
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
