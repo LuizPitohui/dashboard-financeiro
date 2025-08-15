@@ -48,11 +48,6 @@ python manage.py runserver
 
 Acesse: http://localhost:8000
 
-## 👤 Usuário de Teste
-
-- **Usuário**: manus
-- **Senha**: manus_password_123
-
 ## 📱 Funcionalidades Detalhadas
 
 ### Dashboard
