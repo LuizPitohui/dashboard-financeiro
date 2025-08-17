@@ -33,7 +33,7 @@ DEBUG = env('DEBUG')
 
 # Configure os hosts permitidos. Você DEVE adicionar a URL do seu site no Render aqui.
 # Ex: 'dashboard-financeiro.onrender.com'
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '192.168.100.24',])
 
 # Adicione a URL do seu site no Render para proteção CSRF.
 # Ex: 'https://dashboard-financeiro.onrender.com'

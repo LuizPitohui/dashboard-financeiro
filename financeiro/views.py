@@ -1,3 +1,4 @@
+#financeiro\views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -35,23 +36,25 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
-    # Calcular saldo total
+    # --- Calcular saldo total (AGORA INCLUI TODAS AS MOVIMENTAÇÕES) ---
+    # Removemos o filtro 'usuario=request.user' para que o saldo seja global
     entradas = Movimentacao.objects.filter(
-        usuario=request.user, 
         tipo='entrada'
     ).aggregate(total=Sum('valor'))['total'] or 0
     
     saidas = Movimentacao.objects.filter(
-        usuario=request.user, 
         tipo='saida'
-    ).aggregate(total=Sum('valor'))['total'] or 0
+    ).aggregate(total=Sum('valor'))[
+        'total'
+    ] or 0
     
     saldo_total = entradas - saidas
     
-    # Últimas movimentações
-    ultimas_movimentacoes = Movimentacao.objects.filter(
-        usuario=request.user
-    )[:5]
+    # --- Últimas movimentações (AGORA INCLUI TODAS AS MOVIMENTAÇÕES) ---
+    # Removemos o filtro 'usuario=request.user' para que as últimas movimentações sejam globais
+    ultimas_movimentacoes = Movimentacao.objects.all().order_by(
+        '-data_movimentacao'
+    )[:5] # Ordena pela data da movimentação, as 5 mais recentes
     
     context = {
         'saldo_total': saldo_total,
@@ -95,7 +98,8 @@ def cadastrar_movimentacao(request):
 
 @login_required
 def historico(request):
-    movimentacoes = Movimentacao.objects.filter(usuario=request.user)
+    #movimentacoes = Movimentacao.objects.filter(usuario=request.user)
+    movimentacoes = Movimentacao.objects.all().order_by("-data_movimentacao")
     
     # Filtros
     nome_filtro = request.GET.get('nome', '')
