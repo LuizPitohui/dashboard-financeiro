@@ -157,7 +157,6 @@ def dados_grafico(request):
         inicio = hoje - timedelta(days=30)
     
     movimentacoes = Movimentacao.objects.filter(
-        usuario=request.user,
         data_movimentacao__gte=inicio
     )
     
