@@ -142,7 +142,37 @@ def historico(request):
     return render(request, 'financeiro/historico.html', context)
 
 
-@login_required
+def transparencia_view(request):
+    # --- Calcular saldo total (AGORA INCLUI TODAS AS MOVIMENTAÇÕES) ---
+    # Removemos o filtro 'usuario=request.user' para que o saldo seja global
+    entradas = Movimentacao.objects.filter(
+        tipo='entrada'
+    ).aggregate(total=Sum('valor'))['total'] or 0
+
+    saidas = Movimentacao.objects.filter(
+        tipo='saida'
+    ).aggregate(total=Sum('valor'))[
+        'total'
+    ] or 0
+
+    saldo_total = entradas - saidas
+
+    # --- Últimas movimentações (AGORA INCLUI TODAS AS MOVIMENTAÇÕES) ---
+    # Removemos o filtro 'usuario=request.user' para que as últimas movimentações sejam globais
+    ultimas_movimentacoes = Movimentacao.objects.all().order_by(
+        '-data_movimentacao'
+    )[:5] # Ordena pela data da movimentação, as 5 mais recentes
+
+    context = {
+        'saldo_total': saldo_total,
+        'total_entradas': entradas,
+        'total_saidas': saidas,
+        'ultimas_movimentacoes': ultimas_movimentacoes,
+    }
+
+    return render(request, 'financeiro/transparencia.html', context)
+
+
 def dados_grafico(request):
     periodo = request.GET.get('periodo', 'mensal')
     hoje = timezone.now().date()
