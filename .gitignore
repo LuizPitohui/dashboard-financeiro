@@ -9,15 +9,14 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+#build/
 dist/
 wheels/
 *.egg-info/
 
 # Environments
-.env
 .venv
-env/
+#env/
 venv/
 
 # Editors
