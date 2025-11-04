@@ -1,0 +1,82 @@
+/* static/css/modals.css */
+
+/* Estilo para o modal de escolha */
+.modal-choice-body {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2rem 1rem;
+    gap: 1rem;
+}
+
+.choice-card {
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    width: 45%;
+    transition: all 0.3s ease;
+}
+
+.choice-card i {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.choice-card h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Efeito Hover Entrada */
+.choice-card.entrada {
+    color: var(--accent-green);
+    border-color: var(--accent-green);
+}
+.choice-card.entrada:hover {
+    background-color: rgba(70, 166, 111, 0.1); /* Verde com transparência */
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(70, 166, 111, 0.2);
+}
+
+/* Efeito Hover Saída */
+.choice-card.saida {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+.choice-card.saida:hover {
+    background-color: rgba(242, 95, 92, 0.1); /* Vermelho com transparência */
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(242, 95, 92, 0.2);
+}
+
+/* Botões dos formulários */
+.btn-success {
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
+}
+.btn-success:hover {
+    background-color: #3aa166; /* Um pouco mais escuro que o accent-green */
+    border-color: #3aa166;
+}
+
+.btn-danger {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+.btn-danger:hover {
+    background-color: #e04a47; /* Um pouco mais escuro que o accent-red */
+    border-color: #e04a47;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+}

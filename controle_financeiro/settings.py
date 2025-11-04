@@ -37,7 +37,7 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '192.168.100.24'
 
 # Adicione a URL do seu site no Render para proteção CSRF.
 # Ex: 'https://dashboard-financeiro.onrender.com'
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[] )
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[   ] )
 
 
 # Application definition

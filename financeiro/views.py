@@ -1,4 +1,5 @@
-#financeiro\views.py
+# /financeiro/views.py (CORRIGIDO E COMPLETO)
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -9,7 +10,9 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from .models import Movimentacao
 import json
+from decimal import Decimal, InvalidOperation # <-- Importações necessárias
 
+# --- Vistas de Autenticação ---
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -34,27 +37,24 @@ def logout_view(request):
     return redirect('login')
 
 
+# --- Vistas de Página ---
+
 @login_required
 def dashboard(request):
-    # --- Calcular saldo total (AGORA INCLUI TODAS AS MOVIMENTAÇÕES) ---
-    # Removemos o filtro 'usuario=request.user' para que o saldo seja global
+    # Usamos request.user para que cada usuário veja apenas os seus dados
     entradas = Movimentacao.objects.filter(
-        tipo='entrada'
+        usuario=request.user, tipo='entrada'
     ).aggregate(total=Sum('valor'))['total'] or 0
     
     saidas = Movimentacao.objects.filter(
-        tipo='saida'
-    ).aggregate(total=Sum('valor'))[
-        'total'
-    ] or 0
+        usuario=request.user, tipo='saida'
+    ).aggregate(total=Sum('valor'))['total'] or 0
     
     saldo_total = entradas - saidas
     
-    # --- Últimas movimentações (AGORA INCLUI TODAS AS MOVIMENTAÇÕES) ---
-    # Removemos o filtro 'usuario=request.user' para que as últimas movimentações sejam globais
-    ultimas_movimentacoes = Movimentacao.objects.all().order_by(
-        '-data_movimentacao'
-    )[:5] # Ordena pela data da movimentação, as 5 mais recentes
+    ultimas_movimentacoes = Movimentacao.objects.filter(
+        usuario=request.user
+    ).order_by('-data_movimentacao')[:5]
     
     context = {
         'saldo_total': saldo_total,
@@ -67,39 +67,8 @@ def dashboard(request):
 
 
 @login_required
-def cadastrar_movimentacao(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            
-            movimentacao = Movimentacao.objects.create(
-                usuario=request.user,
-                tipo=data['tipo'],
-                valor=data['valor'],
-                forma_pagamento=data['forma_pagamento'],
-                nome_pessoa=data['nome_pessoa'],
-                descricao=data['descricao'],
-                data_movimentacao=data.get('data_movimentacao', timezone.now().date())
-            )
-            
-            return JsonResponse({
-                'success': True,
-                'message': 'Movimentação cadastrada com sucesso!'
-            })
-            
-        except Exception as e:
-            return JsonResponse({
-                'success': False,
-                'message': f'Erro ao cadastrar movimentação: {str(e)}'
-            })
-    
-    return JsonResponse({'success': False, 'message': 'Método não permitido'})
-
-
-@login_required
 def historico(request):
-    #movimentacoes = Movimentacao.objects.filter(usuario=request.user)
-    movimentacoes = Movimentacao.objects.all().order_by("-data_movimentacao")
+    movimentacoes = Movimentacao.objects.filter(usuario=request.user).order_by("-data_movimentacao")
     
     # Filtros
     nome_filtro = request.GET.get('nome', '')
@@ -142,6 +111,8 @@ def historico(request):
     return render(request, 'financeiro/historico.html', context)
 
 
+# --- Vistas de API ---
+
 @login_required
 def dados_grafico(request):
     periodo = request.GET.get('periodo', 'mensal')
@@ -156,8 +127,9 @@ def dados_grafico(request):
     else:
         inicio = hoje - timedelta(days=30)
     
+    # Filtra por usuário logado
     movimentacoes = Movimentacao.objects.filter(
-        data_movimentacao__gte=inicio
+        usuario=request.user, data_movimentacao__gte=inicio
     )
     
     # Agrupar por data
@@ -183,3 +155,48 @@ def dados_grafico(request):
         'saidas': saidas
     })
 
+
+@login_required
+def cadastrar_movimentacao_api(request):
+    """
+    View de API para cadastrar uma movimentação via AJAX (Fetch).
+    Esta view espera FormData, não JSON.
+    """
+    if request.method == 'POST':
+        try:
+            tipo = request.POST.get('tipo')
+            valor = request.POST.get('valor')
+            nome_pessoa = request.POST.get('nome_pessoa')
+            descricao = request.POST.get('descricao')
+            forma_pagamento = request.POST.get('forma_pagamento')
+
+            # --- Validação ---
+            if not all([tipo, valor, nome_pessoa, forma_pagamento]):
+                return JsonResponse({'status': 'error', 'message': 'Todos os campos obrigatórios devem ser preenchidos.'}, status=400)
+            
+            if tipo not in ['entrada', 'saida']:
+                return JsonResponse({'status': 'error', 'message': 'Tipo de movimentação inválido.'}, status=400)
+            
+            try:
+                valor_decimal = Decimal(valor.replace(',', '.'))
+                if valor_decimal <= 0:
+                    raise InvalidOperation
+            except InvalidOperation:
+                 return JsonResponse({'status': 'error', 'message': 'O valor deve ser um número positivo.'}, status=400)
+
+            # --- Criação do Objeto ---
+            Movimentacao.objects.create(
+                usuario=request.user,
+                tipo=tipo,
+                valor=valor_decimal,
+                nome_pessoa=nome_pessoa,
+                descricao=descricao or "",
+                forma_pagamento=forma_pagamento
+            )
+            
+            return JsonResponse({'status': 'success', 'message': 'Movimentação cadastrada com sucesso!'})
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': f'Ocorreu um erro interno: {str(e)}'}, status=500)
+    
+    return JsonResponse({'status': 'error', 'message': 'Método não permitido.'}, status=405)

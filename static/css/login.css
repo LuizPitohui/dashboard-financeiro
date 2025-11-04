@@ -1,0 +1,228 @@
+/* static/css/login.css */
+
+/* Color Palette */
+:root {
+    --bg-dark-deep: #161426;  /* Quase Preto */
+    --bg-dark: #221E40;      /* Azul/Roxo Muito Escuro */
+    --primary: #9177F2;     /* Roxo Médio */
+    --primary-dark: #4F3E8C; /* Roxo Escuro */
+    --accent-green: #46A66F; /* Verde */
+    --text-color: #ffffff;
+    --text-color-muted: #a0a0a0;
+}
+
+/* Base e Animação de Fundo */
+html, body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden; /* Esconde scrollbars */
+}
+
+body {
+    /* CSS de fundo que você forneceu */
+    background-color: var(--bg-dark-deep);
+    background-image: radial-gradient(circle at top right, rgba(145, 118, 242, 0.1), transparent),
+                      radial-gradient(circle at 20% 80%, rgba(79, 62, 140, 0.1), transparent);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    /* CSS de fundo que você forneceu */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Coloca o canvas atrás do conteúdo */
+}
+
+/* Container do Login */
+.login-container {
+    padding: 2.5rem;
+    background-color: rgba(34, 29, 63, 0.85); /* --bg-dark com transparência */
+    border-radius: 12px;
+    border: 1px solid var(--primary-dark);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    z-index: 1;
+    backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/* Cabeçalho */
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.login-header p {
+    font-size: 1rem;
+    color: var(--text-color-muted);
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.login-header .login-logo {
+    max-width: 200px; /* Ajuste o tamanho máximo conforme necessário */
+    height: auto;     /* Mantém a proporção da imagem */
+    margin-bottom: 0.5rem; /* Um pequeno espaço antes do texto "Controle Financeiro" */
+}
+
+/* Alertas / Mensagens */
+.alert {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    background-color: rgba(220, 53, 69, 0.5); /* Vermelho perigo com transparência */
+    border: 1px solid rgba(220, 53, 69, 0.8);
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Formulário */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-label {
+    position: absolute;
+    top: 50%;
+    left: 2.8rem; /* <-- MUDANÇA AQUI: Alinhado com o padding-left do input */
+    transform: translateY(-50%);
+    color: var(--text-color-muted);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    /* display: flex e gap removidos, pois o ícone não está dentro da label */
+}
+.form-control {
+    width: 100%;
+    /* Mude o padding para ter espaço à direita também.
+       O padding-right deve ser igual ao padding-left. 
+    */
+    padding: 1rem 2.8rem 1rem 2.8rem; 
+    background-color: var(--bg-dark-deep);
+    border: 1px solid var(--primary-dark);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box; 
+}
+
+/* Efeito "float label" */
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+    top: -0.75rem;
+    left: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--primary);
+    background-color: var(--bg-dark); /* Cor de fundo do card para o label flutuar */
+    padding: 0 0.25rem;
+    transform: translateY(0);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(145, 118, 242, 0.5);
+}
+
+/* Ícone dentro do input */
+.form-group i {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    color: var(--text-color-muted);
+    transition: color 0.2s ease;
+    z-index: 1; /* Garante que o ícone não seja coberto pelo label */
+}
+
+.form-control:focus + .form-label + i,
+.form-control:not(:placeholder-shown) + .form-label + i {
+    color: var(--primary);
+}
+
+/* Remove o placeholder nativo, já que estamos usando o label */
+.form-control::placeholder {
+    color: transparent;
+}
+
+/* Botão */
+.btn-submit {
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    background-color: var(--primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-submit:hover {
+    background-color: var(--primary-dark);
+    box-shadow: 0 5px 15px rgba(145, 118, 242, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* Rodapé */
+.login-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.login-footer small {
+    color: var(--text-color-muted);
+    font-size: 0.8rem;
+}
+
+/* 2. ADICIONE ESTE NOVO ESTILO PARA O BOTÃO DE VER SENHA */
+#togglePassword {
+    /* Posiciona à direita, ao invés da esquerda */
+    left: auto;
+    right: 1rem;
+    cursor: pointer;
+    z-index: 2; /* Garante que fique acima de tudo */
+}
+
+/* 3. (Opcional) Mude a cor ao focar, como o outro ícone */
+.form-control:focus ~ #togglePassword,
+.form-control:not(:placeholder-shown) ~ #togglePassword {
+    color: var(--primary);
+}

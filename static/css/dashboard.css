@@ -1,0 +1,155 @@
+/* static/css/dashboard.css */
+
+/* Título da Página */
+.page-title {
+    color: var(--text-color);
+    font-weight: 700;
+    border-bottom: 2px solid var(--primary-dark);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem !important;
+}
+
+/* Cards de Resumo (Stats) */
+.stat-card {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--primary); /* Borda padrão */
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card .stat-icon {
+    font-size: 2.5rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    margin-right: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.stat-card .stat-info h5 {
+    font-size: 0.9rem;
+    color: var(--text-color-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.stat-card .stat-info h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* Cores específicas dos Stats Cards */
+.stat-card.entradas {
+    border-left-color: var(--accent-green);
+}
+.stat-card.entradas .stat-icon {
+    color: var(--accent-green);
+}
+
+.stat-card.saidas {
+    border-left-color: var(--accent-red);
+}
+.stat-card.saidas .stat-icon {
+    color: var(--accent-red);
+}
+
+.stat-card.saldo {
+    border-left-color: var(--primary);
+}
+.stat-card.saldo .stat-icon {
+    color: var(--primary);
+}
+
+/* Filtros do Gráfico */
+.chart-filters .btn-check + .btn {
+    background-color: var(--bg-dark-deep);
+    border: 1px solid var(--border-color);
+    color: var(--text-color-muted);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.chart-filters .btn-check:hover + .btn {
+    background-color: var(--bg-dark);
+}
+
+.chart-filters .btn-check:checked + .btn {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--text-color);
+    box-shadow: 0 0 10px rgba(145, 118, 242, 0.4);
+}
+
+/* Card de Últimas Movimentações */
+.movimentacao-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0.25rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.movimentacao-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.movimentacao-item:hover {
+    background-color: rgba(145, 118, 242, 0.05);
+}
+
+.movimentacao-info strong {
+    color: var(--text-color);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.1rem;
+}
+
+.movimentacao-info small {
+    color: var(--text-color-muted);
+    font-size: 0.8rem;
+}
+
+.movimentacao-valor .badge {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.4em 0.7em;
+    width: 100px; /* Largura fixa para alinhamento */
+    text-align: right;
+}
+
+/* Botão "Ver todas" */
+.btn-ver-todas {
+    background-color: var(--primary);
+    color: var(--text-color);
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-ver-todas:hover {
+    background-color: var(--primary-dark);
+    color: var(--text-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(145, 118, 242, 0.3);
+}
+
+/* Overrides de Cores do Bootstrap */
+.badge.bg-success {
+    background-color: var(--accent-green) !important;
+    color: var(--text-color);
+}
+.badge.bg-danger {
+    background-color: var(--accent-red) !important;
+    color: var(--text-color);
+}

@@ -3,71 +3,80 @@
 
 {% block title %}Dashboard - UNI Controle Financeiro{% endblock %}
 
+{% block css %}
+<link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Dashboard</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <h1 class="page-title">Dashboard</h1>
 </div>
 
-<!-- Cards de resumo -->
 <div class="row mb-4">
-    <div class="col-md-4">
-        <div class="card text-white bg-success">
-            <div class="card-header">
-                <i class="bi bi-arrow-up-circle"></i> Total de Entradas
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="stat-card entradas">
+            <div class="stat-icon">
+                <i class="bi bi-arrow-up-circle"></i>
             </div>
-            <div class="card-body">
-                <h4 class="card-title">R$ {{ total_entradas|floatformat:2 }}</h4>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card text-white bg-danger">
-            <div class="card-header">
-                <i class="bi bi-arrow-down-circle"></i> Total de Saídas
-            </div>
-            <div class="card-body">
-                <h4 class="card-title">R$ {{ total_saidas|floatformat:2 }}</h4>
+            <div class="stat-info">
+                <h5>Total de Entradas</h5>
+                <h3>R$ {{ total_entradas|floatformat:2 }}</h3>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card text-white {% if saldo_total >= 0 %}bg-primary{% else %}bg-warning{% endif %}">
-            <div class="card-header">
-                <i class="bi bi-wallet2"></i> Saldo Total
+    
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="stat-card saidas">
+            <div class="stat-icon">
+                <i class="bi bi-arrow-down-circle"></i>
             </div>
-            <div class="card-body">
-                <h4 class="card-title">R$ {{ saldo_total|floatformat:2 }}</h4>
+            <div class="stat-info">
+                <h5>Total de Saídas</h5>
+                <h3>R$ {{ total_saidas|floatformat:2 }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 col-md-12 mb-3">
+        <div class="stat-card saldo">
+            <div class="stat-icon">
+                <i class="bi bi-wallet2"></i>
+            </div>
+            <div class="stat-info">
+                <h5>Saldo Total</h5>
+                <h3>R$ {{ saldo_total|floatformat:2 }}</h3>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Gráfico e últimas movimentações -->
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-8 mb-3">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
                     <i class="bi bi-bar-chart"></i> Movimentação Financeira
                 </h5>
-                <div class="btn-group" role="group">
+                <div class="btn-group chart-filters" role="group">
                     <input type="radio" class="btn-check" name="periodo" id="semanal" value="semanal">
-                    <label class="btn btn-outline-primary btn-sm" for="semanal">Semanal</label>
+                    <label class="btn" for="semanal">Semanal</label>
                     
                     <input type="radio" class="btn-check" name="periodo" id="mensal" value="mensal" checked>
-                    <label class="btn btn-outline-primary btn-sm" for="mensal">Mensal</label>
+                    <label class="btn" for="mensal">Mensal</label>
                     
                     <input type="radio" class="btn-check" name="periodo" id="anual" value="anual">
-                    <label class="btn btn-outline-primary btn-sm" for="anual">Anual</label>
+                    <label class="btn" for="anual">Anual</label>
                 </div>
             </div>
             <div class="card-body">
-                <canvas id="graficoMovimentacao" width="400" height="200"></canvas>
+                <div style="height: 300px;">
+                    <canvas id="graficoMovimentacao"></canvas>
+                </div>
             </div>
         </div>
     </div>
     
-    <div class="col-md-4">
+    <div class="col-md-4 mb-3">
         <div class="card">
             <div class="card-header">
                 <h5 class="mb-0">
@@ -77,15 +86,12 @@
             <div class="card-body">
                 {% if ultimas_movimentacoes %}
                     {% for mov in ultimas_movimentacoes %}
-                        <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                            <div>
-                                <small class="text-muted">{{ mov.data_movimentacao|date:"d/m/Y" }}</small>
-                                <br>
+                        <div class="movimentacao-item">
+                            <div class="movimentacao-info">
                                 <strong>{{ mov.nome_pessoa }}</strong>
-                                <br>
-                                <small>{{ mov.get_forma_pagamento_display }}</small>
+                                <small>{{ mov.data_movimentacao|date:"d/m/Y" }} - {{ mov.get_forma_pagamento_display }}</small>
                             </div>
-                            <div class="text-end">
+                            <div class="movimentacao-valor">
                                 <span class="badge {% if mov.tipo == 'entrada' %}bg-success{% else %}bg-danger{% endif %}">
                                     {% if mov.tipo == 'entrada' %}+{% else %}-{% endif %}R$ {{ mov.valor|floatformat:2 }}
                                 </span>
@@ -93,12 +99,12 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <p class="text-muted">Nenhuma movimentação encontrada.</p>
+                    <p class="text-muted text-center">Nenhuma movimentação encontrada.</p>
                 {% endif %}
                 
                 <div class="text-center mt-3">
-                    <a href="{% url 'historico' %}" class="btn btn-outline-primary btn-sm">
-                        Ver todas <i class="bi bi-arrow-right"></i>
+                    <a href="{% url 'historico' %}" class="btn btn-ver-todas">
+                        Ver histórico completo <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -112,6 +118,12 @@
 <script>
     let grafico;
     
+    // Cores da nossa paleta
+    const corVerde = '#46A66F'; // --accent-green
+    const corVermelha = '#F25F5C'; // --accent-red
+    const corTexto = '#ffffff';
+    const corGrid = '#4F3E8C'; // --primary-dark (para linhas de grid)
+
     function carregarGrafico(periodo = 'mensal') {
         fetch(`/api/dados-grafico/?periodo=${periodo}`)
             .then(response => response.json())
@@ -127,35 +139,57 @@
                     data: {
                         labels: data.labels.map(label => {
                             const date = new Date(label);
-                            return date.toLocaleDateString('pt-BR');
+                            // Formato mais curto para o gráfico
+                            return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
                         }),
                         datasets: [{
                             label: 'Entradas',
                             data: data.entradas,
-                            borderColor: 'rgb(25, 135, 84)',
-                            backgroundColor: 'rgba(25, 135, 84, 0.1)',
-                            tension: 0.1
+                            borderColor: corVerde,
+                            backgroundColor: 'rgba(70, 166, 111, 0.1)',
+                            fill: true,
+                            tension: 0.3
                         }, {
                             label: 'Saídas',
                             data: data.saidas,
-                            borderColor: 'rgb(220, 53, 69)',
-                            backgroundColor: 'rgba(220, 53, 69, 0.1)',
-                            tension: 0.1
+                            borderColor: corVermelha,
+                            backgroundColor: 'rgba(242, 95, 92, 0.1)',
+                            fill: true,
+                            tension: 0.3
                         }]
                     },
                     options: {
+                        // === OPÇÕES DE TEMA ESCURO ===
                         responsive: true,
+                        maintainAspectRatio: false,
                         scales: {
                             y: {
                                 beginAtZero: true,
                                 ticks: {
+                                    color: corTexto, // Cor dos labels do eixo Y
                                     callback: function(value) {
-                                        return 'R$ ' + value.toFixed(2);
+                                        return 'R$ ' + value.toFixed(0);
                                     }
+                                },
+                                grid: {
+                                    color: corGrid // Cor das linhas do grid Y
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: corTexto // Cor dos labels do eixo X
+                                },
+                                grid: {
+                                    color: 'transparent' // Linhas do grid X transparentes
                                 }
                             }
                         },
                         plugins: {
+                            legend: {
+                                labels: {
+                                    color: corTexto // Cor da legenda
+                                }
+                            },
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
@@ -164,6 +198,7 @@
                                 }
                             }
                         }
+                        // === FIM DAS OPÇÕES DE TEMA ===
                     }
                 });
             });
@@ -180,4 +215,3 @@
     });
 </script>
 {% endblock %}
-

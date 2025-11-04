@@ -1,0 +1,167 @@
+/* static/css/base.css */
+
+/* Paleta de Cores Futurista */
+:root {
+    --bg-dark-deep: #161426;  /* Quase Preto (Fundo Principal) */
+    --bg-dark: #221E40;      /* Azul/Roxo (Sidebar, Cards, Modais) */
+    --primary: #9177F2;     /* Roxo Médio (Destaques, Links Ativos) */
+    --primary-dark: #4F3E8C; /* Roxo Escuro (Bordas, Navbar) */
+    --accent-green: #46A66F; /* Verde (Sucesso, Entradas) */
+    --accent-red: #F25F5C;   /* Vermelho (Perigo, Saídas) */
+    --text-color: #ffffff;
+    --text-color-muted: #a0a0a0;
+    --border-color: var(--primary-dark);
+}
+
+/* Base */
+html, body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-dark-deep);
+    color: var(--text-color);
+}
+
+/* Navbar Customizada */
+.navbar-custom {
+    background-color: var(--primary-dark);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-logo {
+    max-height: 40px; /* Ajuste a altura da sua logo na navbar */
+    height: auto;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--bg-dark) !important;
+    border-right: 1px solid var(--border-color);
+    min-height: calc(100vh - 70px); /* 70px é a altura da navbar */
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .nav-link {
+    color: var(--text-color-muted);
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.25rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(145, 118, 242, 0.1); /* --primary com transparência */
+    color: var(--primary);
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 10px rgba(145, 118, 242, 0.3);
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.75rem;
+    width: 1.2rem;
+    font-size: 1.1rem;
+}
+
+/* Conteúdo Principal */
+main {
+    padding-top: 24px;
+}
+
+/* Cards */
+.card {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden; /* Garante que o header do card respeite o border-radius */
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    background-color: rgba(79, 62, 140, 0.3); /* --primary-dark com transparência */
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Tabelas */
+.table {
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: var(--text-color);
+}
+
+.table-hover > tbody > tr:hover > * {
+    background-color: rgba(145, 118, 242, 0.1); /* --primary com transparência */
+    color: var(--primary);
+}
+
+/* Modais */
+.modal-content {
+    background-color: var(--bg-dark) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    border-radius: 12px;
+}
+
+.modal-header, .modal-footer {
+    border-bottom-color: var(--border-color) !important;
+    border-top-color: var(--border-color) !important;
+}
+
+/* Cores customizadas para modais */
+.bg-custom-success {
+    background-color: var(--accent-green) !important;
+}
+
+.bg-custom-danger {
+    background-color: var(--accent-red) !important;
+}
+
+/* Botão de fechar do modal (X) */
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.btn-close-white {
+    filter: none;
+}
+
+/* Formulários (dentro dos modais, etc) */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-dark-deep);
+    color: var(--text-color);
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(145, 118, 242, 0.3); /* --primary com transparência */
+    background-color: var(--bg-dark-deep);
+    color: var(--text-color);
+}
+
+.form-control::placeholder {
+    color: var(--text-color-muted);
+}
+
+/* Alertas */
+.alert {
+    border: none;
+    border-radius: 8px;
+}
