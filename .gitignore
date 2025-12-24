@@ -48,3 +48,6 @@ controle_financeiro_completo.tar.gz
 controle_financeiro_projeto.tar.gz
 todo.md
 README_PROJETO.md
+
+# Ignora a pasta de estáticos coletados (gerados)
+staticfiles/
