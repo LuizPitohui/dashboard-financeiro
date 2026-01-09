@@ -1,12 +1,11 @@
 /* Tema claro (padrão) */
 :root {
-    --bg-color: #ffffff;
-    --text-color: #212529;
-    --sidebar-bg: #f8f9fa;
+    --bg-color: #f8fafc;
+    --text-color: #1e293b;
+    --sidebar-bg: #ffffff;
     --card-bg: #ffffff;
-    --border-color: #dee2e6;
+    --border-color: #e2e8f0;
 }
-
 /* Tema escuro */
 [data-theme="dark"] {
     --bg-color: #212529;

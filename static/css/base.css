@@ -2,15 +2,16 @@
 
 /* Paleta de Cores Futurista */
 :root {
-    --bg-dark-deep: #161426;  /* Quase Preto (Fundo Principal) */
-    --bg-dark: #221E40;      /* Azul/Roxo (Sidebar, Cards, Modais) */
-    --primary: #9177F2;     /* Roxo Médio (Destaques, Links Ativos) */
-    --primary-dark: #4F3E8C; /* Roxo Escuro (Bordas, Navbar) */
-    --accent-green: #46A66F; /* Verde (Sucesso, Entradas) */
-    --accent-red: #F25F5C;   /* Vermelho (Perigo, Saídas) */
-    --text-color: #ffffff;
-    --text-color-muted: #a0a0a0;
-    --border-color: var(--primary-dark);
+    --bg-dark-deep: #f0f2f5;  /* Cinza muito claro (Fundo Principal) */
+    --bg-dark: #ffffff;      /* Branco (Sidebar, Cards, Modais) */
+    --primary: #6366f1;     /* Roxo Indigo (Destaques) */
+    --primary-dark: #e5e7eb; /* Cinza claro (Bordas) */
+    --accent-green: #10b981; /* Verde (Entradas) */
+    --accent-red: #ef4444;   /* Vermelho (Saídas) */
+    --text-color: #1f2937;   /* Cinza Escuro (Texto Principal) */
+    --text-color-2: #f0f2f5;   /* Cinza Escuro (Texto Principal) */
+    --text-color-muted: #6b7280; /* Cinza Médio (Subtítulos) */
+    --border-color: #dee2e6;
 }
 
 /* Base */
@@ -20,10 +21,11 @@ html, body {
     color: var(--text-color);
 }
 
-/* Navbar Customizada */
+/* Ajuste na Navbar para não ficar "pesada" */
 .navbar-custom {
-    background-color: var(--primary-dark);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .navbar-logo {
@@ -48,8 +50,9 @@ html, body {
     font-weight: 500;
 }
 
+/* Ajuste no Hover da Sidebar para o modo claro */
 .sidebar .nav-link:hover {
-    background-color: rgba(145, 118, 242, 0.1); /* --primary com transparência */
+    background-color: #f3f4f6;
     color: var(--primary);
 }
 
@@ -97,9 +100,9 @@ main {
     border-color: var(--border-color);
 }
 
+/* Tabelas mais limpas */
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-    background-color: rgba(255, 255, 255, 0.03);
-    color: var(--text-color);
+    background-color: #f9fafb;
 }
 
 .table-hover > tbody > tr:hover > * {
@@ -164,4 +167,8 @@ main {
 .alert {
     border: none;
     border-radius: 8px;
+}
+
+.btn-close {
+    filter: none; /* Remove a inversão que era usada no escuro */
 }

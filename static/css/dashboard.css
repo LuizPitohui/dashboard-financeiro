@@ -11,8 +11,9 @@
 
 /* Cards de Resumo (Stats) */
 .stat-card {
-    background-color: var(--bg-dark);
-    border: 1px solid var(--border-color);
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     border-left: 5px solid var(--primary); /* Borda padrão */
     border-radius: 12px;
     padding: 1.5rem;
@@ -31,7 +32,7 @@
     padding: 0.75rem;
     border-radius: 10px;
     margin-right: 1.5rem;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: #f9fafb;
 }
 
 .stat-card .stat-info h5 {
@@ -44,7 +45,7 @@
 .stat-card .stat-info h3 {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--text-color);
+    color: #111827;
     margin: 0;
 }
 
@@ -72,9 +73,9 @@
 
 /* Filtros do Gráfico */
 .chart-filters .btn-check + .btn {
-    background-color: var(--bg-dark-deep);
-    border: 1px solid var(--border-color);
-    color: var(--text-color-muted);
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #374151;
     padding: 0.3rem 0.75rem;
     font-size: 0.8rem;
     transition: all 0.2s ease;
@@ -87,8 +88,8 @@
 .chart-filters .btn-check:checked + .btn {
     background-color: var(--primary);
     border-color: var(--primary);
-    color: var(--text-color);
-    box-shadow: 0 0 10px rgba(145, 118, 242, 0.4);
+    color: var(--text-color-2);
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.3);
 }
 
 /* Card de Últimas Movimentações */
@@ -133,7 +134,7 @@
 /* Botão "Ver todas" */
 .btn-ver-todas {
     background-color: var(--primary);
-    color: var(--text-color);
+    color:#ffffff;
     border: none;
     transition: all 0.3s ease;
 }
@@ -141,7 +142,7 @@
     background-color: var(--primary-dark);
     color: var(--text-color);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(145, 118, 242, 0.3);
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.3);
 }
 
 /* Overrides de Cores do Bootstrap */
