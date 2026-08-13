@@ -51,3 +51,8 @@ README_PROJETO.md
 
 # Ignora a pasta de estáticos coletados (gerados)
 staticfiles/
+.env
+.env.local
+.env.*.local
+.env.prod
+!.env*.example
